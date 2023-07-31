@@ -1,13 +1,48 @@
 <!DOCTYPE html>
+<html>
+<head>
+  <title>NASA APOD Image of the Day</title>
+</head>
+<body>
+  <h1>NASA Astronomy Picture of the Day</h1>
+  <div id="image-container">
+    <!-- The fetched image will be displayed here -->
+  </div>
+  <script>
+    // Function to fetch APOD data and update the webpage
+    async function fetchAndDisplayImage() {
+      const apiKey = 'c2lcZuGcnAd5NumIPbW7Ug9BMWWyPv9g4GZwNT3o'; // Replace with your NASA API key
+      const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
 
-<html lang="en">
-    <head>
-        <title>
-            Mike Bunkers
-        </title>
-    </head>
-    <body>
-        <h1>Image of the day</h1>
-        <img src="SpottedSun_Sanli_960.jpg">
-    </body>
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        // Check if the media type is an image
+        if (data.media_type === 'image') {
+          const imageContainer = document.getElementById('image-container');
+
+          // Create an image element and set the source
+          const img = document.createElement('img');
+          img.src = data.url;
+          img.alt = data.title;
+
+          // Add the image to the webpage
+          imageContainer.innerHTML = '';
+          imageContainer.appendChild(img);
+        } else {
+          console.error('APOD API returned media type other than image');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    // Call the function to initially fetch and display the image
+    fetchAndDisplayImage();
+
+    // Call the function once every day (in milliseconds)
+    setInterval(fetchAndDisplayImage, 24 * 60 * 60 * 1000);
+  </script>
+</body>
 </html>
