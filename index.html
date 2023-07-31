@@ -8,6 +8,9 @@
   <div id="image-container">
     <!-- The fetched image will be displayed here -->
   </div>
+  <div id="image-info">
+    <!-- Image title, date, and explanation will be displayed here -->
+  </div>
   <script>
     // Function to fetch APOD data and update the webpage
     async function fetchAndDisplayImage() {
@@ -21,15 +24,31 @@
         // Check if the media type is an image
         if (data.media_type === 'image') {
           const imageContainer = document.getElementById('image-container');
+          const imageInfoContainer = document.getElementById('image-info');
 
           // Create an image element and set the source
           const img = document.createElement('img');
           img.src = data.url;
           img.alt = data.title;
 
-          // Add the image to the webpage
+          // Create elements for title, date, and explanation
+          const titleElement = document.createElement('h2');
+          titleElement.textContent = data.title;
+
+          const dateElement = document.createElement('p');
+          dateElement.textContent = `Date: ${data.date}`;
+
+          const explanationElement = document.createElement('p');
+          explanationElement.textContent = data.explanation;
+
+          // Add the image and info to the webpage
           imageContainer.innerHTML = '';
           imageContainer.appendChild(img);
+
+          imageInfoContainer.innerHTML = '';
+          imageInfoContainer.appendChild(titleElement);
+          imageInfoContainer.appendChild(dateElement);
+          imageInfoContainer.appendChild(explanationElement);
         } else {
           console.error('APOD API returned media type other than image');
         }
