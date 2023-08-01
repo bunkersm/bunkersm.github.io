@@ -1,67 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NASA APOD Image of the Day</title>
+  <meta charset="UTF-8">
+  <title>Your Personal Website</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>NASA Astronomy Picture of the Day</h1>
-  <div id="image-container">
-    <!-- The fetched image will be displayed here -->
-  </div>
-  <div id="image-info">
-    <!-- Image title, date, and explanation will be displayed here -->
-  </div>
-  <script>
-    // Function to fetch APOD data and update the webpage
-    async function fetchAndDisplayImage() {
-      const apiKey = 'c2lcZuGcnAd5NumIPbW7Ug9BMWWyPv9g4GZwNT3o'; // Replace with your NASA API key
-      const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+  <header>
+    <h1>Welcome to My Personal Website</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="https://bunkersm.github.io/Hangman/">Hangman</a></li>
+      </ul>
+    </nav>
+  </header>
 
-      try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
+  <main>
+    <section id="about">
+      <h2>About Me</h2>
+      <p>Add your personal information here.</p>
+    </section>
 
-        // Check if the media type is an image
-        if (data.media_type === 'image') {
-          const imageContainer = document.getElementById('image-container');
-          const imageInfoContainer = document.getElementById('image-info');
+    <section id="projects">
+      <h2>Projects</h2>
+      <p>Add your projects or showcase your work here.</p>
+    </section>
 
-          // Create an image element and set the source
-          const img = document.createElement('img');
-          img.src = data.url;
-          img.alt = data.title;
+    <section id="contact">
+      <h2>Contact Me</h2>
+      <p>Add your contact details here.</p>
+    </section>
+  </main>
 
-          // Create elements for title, date, and explanation
-          const titleElement = document.createElement('h2');
-          titleElement.textContent = data.title;
-
-          const dateElement = document.createElement('p');
-          dateElement.textContent = `Date: ${data.date}`;
-
-          const explanationElement = document.createElement('p');
-          explanationElement.textContent = data.explanation;
-
-          // Add the image and info to the webpage
-          imageContainer.innerHTML = '';
-          imageContainer.appendChild(img);
-
-          imageInfoContainer.innerHTML = '';
-          imageInfoContainer.appendChild(titleElement);
-          imageInfoContainer.appendChild(dateElement);
-          imageInfoContainer.appendChild(explanationElement);
-        } else {
-          console.error('APOD API returned media type other than image');
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-
-    // Call the function to initially fetch and display the image
-    fetchAndDisplayImage();
-
-    // Call the function once every day (in milliseconds)
-    setInterval(fetchAndDisplayImage, 24 * 60 * 60 * 1000);
-  </script>
+  <footer>
+    <p>&copy; 2023 Your Name. All rights reserved.</p>
+  </footer>
 </body>
 </html>
