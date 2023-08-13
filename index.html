@@ -1,43 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Your Personal Website</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Image of the Day</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Welcome to My Personal Website</h1>
-    <nav>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Projects</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="https://bunkersm.github.io/Hangman/">Hangman</a></li>
-      </ul>
-    </nav>
-  </header>
+    <h1>NASA Image of the Day</h1>
+    <div id="imageContainer">
+        <p>Loading...</p>
+    </div>
 
-  <main>
-    <section id="about">
-      <h2>About Me</h2>
-      <p>Add your personal information here.</p>
-    </section>
+    <script>
+        // NASA API URL
+        const nasaApiUrl = 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY';
 
-    <section id="projects">
-      <h2>Projects</h2>
-      <p>Add your projects or showcase your work here.</p>
-    </section>
-
-    <section id="contact">
-      <h2>Contact Me</h2>
-      <p>Add your contact details here.</p>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2023 Your Name. All rights reserved.</p>
-  </footer>
+        // Fetch NASA Image of the Day
+        fetch(nasaApiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const imageContainer = document.getElementById('imageContainer');
+                imageContainer.innerHTML = `
+                    <h2>${data.title}</h2>
+                    <p>${data.date}</p>
+                    <img src="${data.hdurl}" alt="${data.title}">
+                    <p>${data.explanation}</p>
+                `;
+            })
+            .catch(error => {
+                const imageContainer = document.getElementById('imageContainer');
+                imageContainer.innerHTML = '<p>Error fetching data from NASA API</p>';
+                console.error('Error fetching data:', error);
+            });
+    </script>
 </body>
 </html>
