@@ -3,44 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NASA Image of the Day</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
+    <title>Cosmic Daily — NASA Astronomy Picture of the Day</title>
+    <meta name="description" content="Browse NASA's Astronomy Picture of the Day: today's image, any day since 1995, and a gallery of recent days.">
+    <meta name="theme-color" content="#0b0d17">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>NASA Image of the Day</h1>
-    <div id="imageContainer">
-        <p>Loading...</p>
-    </div>
+    <div class="stars" aria-hidden="true"></div>
 
-    <script>
-        // NASA API URL
-        const nasaApiUrl = 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY';
+    <header class="site-header">
+        <a class="brand" href="./">
+            <span class="brand-mark" aria-hidden="true">🔭</span>
+            <span>Cosmic Daily</span>
+        </a>
+        <nav aria-label="Main">
+            <ul>
+                <li><a href="#picture">Picture</a></li>
+                <li><a href="#gallery">Recent</a></li>
+                <li><a href="#about">About</a></li>
+                <li><button type="button" class="link-button" id="settingsButton">API key</button></li>
+            </ul>
+        </nav>
+    </header>
 
-        // Fetch NASA Image of the Day
-        fetch(nasaApiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const imageContainer = document.getElementById('imageContainer');
-                imageContainer.innerHTML = `
-                    <h2>${data.title}</h2>
-                    <p>${data.date}</p>
-                    <img src="${data.hdurl}" alt="${data.title}">
-                    <p>${data.explanation}</p>
-                `;
-            })
-            .catch(error => {
-                const imageContainer = document.getElementById('imageContainer');
-                imageContainer.innerHTML = '<p>Error fetching data from NASA API</p>';
-                console.error('Error fetching data:', error);
-            });
-    </script>
+    <main>
+        <section id="picture" class="picture" aria-live="polite">
+            <div class="controls">
+                <button type="button" id="prevButton" aria-label="Previous day">&larr; Prev</button>
+                <label class="date-field">
+                    <span class="visually-hidden">Choose a date</span>
+                    <input type="date" id="datePicker" min="1995-06-16">
+                </label>
+                <button type="button" id="nextButton" aria-label="Next day">Next &rarr;</button>
+                <button type="button" id="todayButton">Today</button>
+                <button type="button" id="randomButton">Random</button>
+            </div>
+
+            <article id="apod" class="apod">
+                <div class="media skeleton" id="apodMedia"></div>
+                <div class="apod-text">
+                    <p class="apod-date" id="apodDate"></p>
+                    <h1 class="apod-title" id="apodTitle">Loading&hellip;</h1>
+                    <p class="apod-credit" id="apodCredit"></p>
+                    <p class="apod-explanation" id="apodExplanation"></p>
+                    <div class="apod-actions" id="apodActions"></div>
+                </div>
+            </article>
+        </section>
+
+        <section id="gallery" class="gallery-section">
+            <h2>The last two weeks</h2>
+            <ul class="gallery" id="gallery-grid"></ul>
+        </section>
+
+        <section id="about" class="about">
+            <h2>About</h2>
+            <p>
+                Every day since June 16, 1995, NASA's
+                <a href="https://apod.nasa.gov/apod/astropix.html" target="_blank" rel="noopener">Astronomy Picture of the Day</a>
+                has featured an image or video of our universe, with a short explanation written by a professional astronomer.
+                This site uses the free <a href="https://api.nasa.gov/" target="_blank" rel="noopener">NASA Open APIs</a> to browse the archive.
+            </p>
+            <p>
+                The shared demo key is rate-limited. If pictures stop loading,
+                <a href="https://api.nasa.gov/#signUp" target="_blank" rel="noopener">get a free API key</a>
+                and add it under <em>API key</em> in the menu. It is stored only in your browser.
+            </p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Images and text courtesy of NASA APOD and the credited authors. Built by Mike Bunkers.</p>
+    </footer>
+
+    <dialog id="settingsDialog">
+        <form method="dialog" id="settingsForm">
+            <h2>NASA API key</h2>
+            <p>Leave blank to use the shared <code>DEMO_KEY</code>.</p>
+            <label for="apiKeyInput">API key</label>
+            <input type="text" id="apiKeyInput" autocomplete="off" spellcheck="false" placeholder="DEMO_KEY">
+            <div class="dialog-actions">
+                <button type="submit" value="cancel" class="secondary">Cancel</button>
+                <button type="submit" value="save">Save</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="app.js"></script>
 </body>
 </html>
